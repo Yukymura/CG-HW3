@@ -42,7 +42,7 @@ float shadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir)
     // 从深度纹理中获取最近的深度
     float closestDepth = texture(depthTexture, projCoords.xy).r;
     
-    // 动态偏差计算 - 根据光线角度调整
+    // 偏差
     float bias;
     if(u_lightPosition.w == 1.0){
     	bias = 0.0008;
@@ -50,7 +50,7 @@ float shadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir)
     	bias = 0.005;
     }
     
-    // 使用PCF（百分比渐进过滤）来柔化阴影边缘
+    // 使用PCF来柔化阴影边缘
     float shadow = 0.0;
     vec2 texelSize = 1.0 / vec2(textureSize(depthTexture, 0));
     for(int x = -2; x <= 2; ++x)
@@ -114,8 +114,7 @@ void main()
 
     //判定是否阴影，并对各种颜色进行混合
     float shadow = shadowCalculation(FragPosLightSpace, norm, lightDir);
-    
-    //vec3 resultColor =(ambient + (1.0-shadow) * (diffuse + specular))* TextureColor;
+
     vec3 resultColor=(1.0-shadow/2.0)* lightReflectColor * TextureColor;
     
     // 应用雾化效果

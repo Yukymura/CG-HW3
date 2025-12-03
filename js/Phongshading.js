@@ -34,10 +34,6 @@ var fogEnabled = false;
 var fogDensity = 0.01;
 var fogColor = vec3(0.737255, 0.745098, 0.752941);
 
-// 法线贴图
-var normalTexture = null;
-var useNormalMap = false;
-
 // 鼠标参数
 let isLeftDragging = false;
 let isMiddleDragging = false;
@@ -76,10 +72,6 @@ function initParameters(){
 	
 	// 重置光源颜色为白色
 	customLightColor = vec3(1.0, 1.0, 1.0);
-	
-	// 法线贴图
-	useNormalMap = false;
-    normalTexture = null;
 };
 
 /***窗口加载时调用:程序环境初始化程序********/
@@ -163,18 +155,6 @@ window.onload = function() {
 	window.updateLightColor = updateLightColor;
 	window.uploadTexture = uploadTexture;
 	
-	window.uploadNormalTexture = uploadNormalTexture;
-    
-    // 为法线贴图上传按钮添加事件监听
-    document.getElementById('normalTextureUpload').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            if (window.uploadNormalTexture) {
-                window.uploadNormalTexture(file);
-            }
-        }
-    });
-	
 	//调用绘制函数
 	render();
 }
@@ -253,16 +233,6 @@ function render(){
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
 
 	gl.useProgram(program);
-	// 传递是否使用法线贴图的标志
-    gl.uniform1i(gl.getUniformLocation(program, "useNormalMap"), useNormalMap ? 1 : 0);
-    
-    // 设置法线贴图纹理
-    if (useNormalMap && normalTexture) {
-        gl.activeTexture(gl.TEXTURE3);
-        gl.bindTexture(gl.TEXTURE_2D, normalTexture);
-        gl.uniform1i(gl.getUniformLocation(program, "normalTexture"), 3);
-    }
-	
 	gl.uniform4fv( gl.getUniformLocation(program,  "u_lightPosition"),flatten(lightPosition) );    
     //传递几何变换矩阵，视点和投影矩阵
 	ModelMatrix=formModelMatrix();
@@ -346,8 +316,6 @@ window.onkeydown = function(e){
     switch (code) {
         case 32:    // 空格-重置
             initParameters();//恢复相机初始位置，MVP矩阵单位化，投影方式为正投影
-           	useNormalMap = false;
-    		normalTexture = null;
             break;	
 		case 67://C键：点光源
 			 lightType=1.0; //w=1,(x,y,z)是光源位置,w=0,(x,y,z)是向量光源方向
@@ -564,38 +532,4 @@ function initArrayBuffer(gl, sp, data, num, type, attribute) {
     gl.enableVertexAttribArray(attr);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
-}
-
-// 上传法线贴图函数
-function uploadNormalTexture(file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const image = new Image();
-        image.onload = function() {
-            // 创建法线贴图
-            normalTexture = createNormalTexture(image);
-            useNormalMap = true;
-            console.log("法线贴图已加载和应用");
-            render();
-        };
-        image.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-}
-
-// 创建法线贴图纹理
-function createNormalTexture(image) {
-    var texture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    
-    // 设置法线贴图纹理参数
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    
-    // 加载图像数据到纹理
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-    
-    return texture;
 }

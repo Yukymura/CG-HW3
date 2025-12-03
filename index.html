@@ -4,12 +4,221 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Document</title>
+		<title>Home - 组玛</title>
+		<style>
+			/* 基础样式 */
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+				font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+			}
+			
+			body {
+				background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+				color: #333;
+				min-height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: 20px;
+			}
+			
+			/* 主容器 */
+			.container {
+				max-width: 800px;
+				width: 100%;
+				background-color: white;
+				border-radius: 20px;
+				box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+				padding: 40px;
+				text-align: center;
+				position: relative;
+				overflow: hidden;
+			}
+			
+			/* 装饰性背景元素 */
+			.container::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 8px;
+				background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+			}
+			
+			.container::after {
+				content: '';
+				position: absolute;
+				top: -100px;
+				right: -100px;
+				width: 300px;
+				height: 300px;
+				background: radial-gradient(circle, rgba(106, 17, 203, 0.05) 0%, rgba(37, 117, 252, 0.05) 100%);
+				border-radius: 50%;
+				z-index: 0;
+			}
+			
+			/* 标题样式 */
+			h1 {
+				font-size: 3.5rem;
+				margin-bottom: 30px;
+				background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+				-webkit-background-clip: text;
+				background-clip: text;
+				color: transparent;
+				font-weight: 700;
+				position: relative;
+				z-index: 1;
+				letter-spacing: 1px;
+			}
+			
+			/* 组信息样式 */
+			.group-info {
+				background: linear-gradient(135deg, rgba(106, 17, 203, 0.05) 0%, rgba(37, 117, 252, 0.05) 100%);
+				border-radius: 15px;
+				padding: 25px;
+				margin: 30px 0 40px;
+				border-left: 5px solid #6a11cb;
+				text-align: left;
+				position: relative;
+				z-index: 1;
+				transition: transform 0.3s ease, box-shadow 0.3s ease;
+			}
+			
+			.group-info:hover {
+				transform: translateY(-5px);
+				box-shadow: 0 10px 20px rgba(106, 17, 203, 0.1);
+			}
+			
+			h3 {
+				font-size: 1.8rem;
+				margin: 15px 0;
+				color: #444;
+				display: flex;
+				align-items: center;
+			}
+			
+			h3:before {
+				content: '';
+				display: inline-block;
+				width: 10px;
+				height: 10px;
+				background-color: #2575fc;
+				border-radius: 50%;
+				margin-right: 15px;
+			}
+			
+			/* 链接按钮样式 */
+			.hw-link {
+				display: inline-block;
+				background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+				color: white;
+				padding: 16px 40px;
+				border-radius: 50px;
+				text-decoration: none;
+				font-size: 1.4rem;
+				font-weight: 600;
+				letter-spacing: 1px;
+				transition: all 0.3s ease;
+				position: relative;
+				z-index: 1;
+				box-shadow: 0 8px 20px rgba(106, 17, 203, 0.25);
+				margin-top: 10px;
+				overflow: hidden;
+			}
+			
+			.hw-link:hover {
+				transform: translateY(-5px);
+				box-shadow: 0 12px 25px rgba(106, 17, 203, 0.35);
+			}
+			
+			.hw-link:active {
+				transform: translateY(0);
+			}
+			
+			.hw-link::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: -100%;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+				transition: left 0.7s ease;
+			}
+			
+			.hw-link:hover::after {
+				left: 100%;
+			}
+			
+			/* 装饰性文字 */
+			.decorative-text {
+				margin-top: 40px;
+				color: #888;
+				font-size: 1rem;
+				font-style: italic;
+				position: relative;
+				z-index: 1;
+			}
+			
+			/* 响应式设计 */
+			@media (max-width: 768px) {
+				.container {
+					padding: 30px 20px;
+				}
+				
+				h1 {
+					font-size: 2.8rem;
+				}
+				
+				h3 {
+					font-size: 1.5rem;
+				}
+				
+				.hw-link {
+					padding: 14px 30px;
+					font-size: 1.2rem;
+				}
+			}
+			
+			@media (max-width: 480px) {
+				h1 {
+					font-size: 2.2rem;
+				}
+				
+				h3 {
+					font-size: 1.3rem;
+				}
+				
+				.group-info {
+					padding: 20px;
+				}
+				
+				.hw-link {
+					padding: 12px 25px;
+					font-size: 1.1rem;
+				}
+			}
+		</style>
 	</head>
 
 	<body>
-		<h1>Home</h1>
-		<a href="Phongshading.html">HW3</a>
+		<div class="container">
+			<h1>Home</h1>
+			
+			<div class="group-info">
+				<h3>组名：组玛</h3>
+				<h3>组号：4</h3>
+			</div>
+			
+			<a href="Phongshading.html" class="hw-link">HW3</a>
+			
+			<div class="decorative-text">
+				计算机图形学作业展示页面
+			</div>
+		</div>
 	</body>
 
 </html>
